@@ -1,0 +1,62 @@
+name: Desafio de Variaveis e Escopos
+on: workflow_dispatch
+
+env:
+  APP_NAME: "MeuAppIncrível" # 1. Variavel de escopo global
+
+jobs:
+  build_app:
+    name: Build da Aplicacao
+    runs-on: ubuntu-latest
+    env:
+      BUILD_VERSION: "v1.0.0" # 2. Variavel de escopo de job
+
+    steps:
+      - name: "Passo 1: Variaveis em Escopos Diferentes"
+        env:
+          STEP_TEMP: "Processando..." # 3. Variavel de escopo de step
+        run: |
+          echo "APP_NAME (Global): $APP_NAME"
+          echo "BUILD_VERSION (Job): $BUILD_VERSION"
+          echo "STEP_TEMP (Step): $STEP_TEMP"
+
+      - name: "Passo 2: Observando o Escopo da STEP_TEMP"
+        run: |
+          echo "APP_NAME (Global): $APP_NAME"
+          echo "BUILD_VERSION (Job): $BUILD_VERSION"
+          echo "STEP_TEMP (Step): ${STEP_TEMP:-NAO_ENCONTRADO}" # Verifique o que acontece aqui
+
+      - name: "Passo 3: Auditoria com Variaveis Padrao"
+        run: |
+          # TODO: Complete esta secao usando variaveis de ambiente padrao do GitHub Actions
+          # Exemplo: echo "Repositorio: $GITHUB_REPOSITORY"
+          echo "O usuario [NOME_DO_USUARIO] disparou este workflow no repositorio [NOME_DO_REPO]. O sistema operacional do runner e [SISTEMA_OPERACIONAL]."
+
+      - name: "Passo 4: Gerar Codigo Dinamico"
+        id: gerar_codigo
+        run: |
+          # TODO: Gere um numero aleatorio e o salve em GITHUB_ENV como BUILD_HASH
+          # Exemplo: RANDOM_NUM=$RANDOM
+          # echo "BUILD_HASH=$RANDOM_NUM" >> $GITHUB_ENV
+          echo "BUILD_HASH=VALOR_GERADO_AQUI" >> $GITHUB_ENV # Placeholder
+
+      - name: "Passo 5: Usar Codigo Dinamico"
+        run: |
+          # TODO: Imprima o BUILD_HASH gerado no passo anterior
+          echo "O hash gerado para este build foi: [VALOR_DO_HASH]"
+
+  deploy_app:
+    name: Deploy da Aplicacao
+    runs-on: ubuntu-latest
+    needs: build_app # Este job depende do job 'build_app'
+
+    steps:
+      - name: "Passo 6: Acessando Secrets e Vars"
+        run: |
+          # TODO: Imprima a variavel de repositorio URL_AMBIENTE e o secret API_TOKEN_PROD
+          echo "URL do Ambiente: [URL_DO_AMBIENTE]"
+          echo "API Token (Secret): [API_TOKEN_DO_PROD]"
+
+          # Pergunta de reflexao:
+          # Por que a Secret aparece no log como *** e a variavel aparece normalmente?
+          # O Job 2 consegue ler a variavel BUILD_VERSION criada no Job 1? Por que?
