@@ -30,20 +30,20 @@ jobs:
         run: |
           # TODO: Complete esta secao usando variaveis de ambiente padrao do GitHub Actions
           # Exemplo: echo "Repositorio: $GITHUB_REPOSITORY"
-          echo "O usuario [NOME_DO_USUARIO] disparou este workflow no repositorio [NOME_DO_REPO]. O sistema operacional do runner e [SISTEMA_OPERACIONAL]."
+          echo "O usuario $GITHUB_ACTOR disparou este workflow no repositorio $GITHUB_REPOSITORY. O sistema operacional do runner e $RUNNER_OS."
 
       - name: "Passo 4: Gerar Codigo Dinamico"
         id: gerar_codigo
         run: |
           # TODO: Gere um numero aleatorio e o salve em GITHUB_ENV como BUILD_HASH
           # Exemplo: RANDOM_NUM=$RANDOM
-          # echo "BUILD_HASH=$RANDOM_NUM" >> $GITHUB_ENV
-          echo "BUILD_HASH=VALOR_GERADO_AQUI" >> $GITHUB_ENV # Placeholder
+          RANDOM_NUM=$RANDOM
+          echo "BUILD_HASH=$RANDOM_NUM" >> $GITHUB_ENV # Placeholder
 
       - name: "Passo 5: Usar Codigo Dinamico"
         run: |
           # TODO: Imprima o BUILD_HASH gerado no passo anterior
-          echo "O hash gerado para este build foi: [VALOR_DO_HASH]"
+          echo "O hash gerado para este build foi: $BUILD_HASH"
 
   deploy_app:
     name: Deploy da Aplicacao
@@ -54,8 +54,8 @@ jobs:
       - name: "Passo 6: Acessando Secrets e Vars"
         run: |
           # TODO: Imprima a variavel de repositorio URL_AMBIENTE e o secret API_TOKEN_PROD
-          echo "URL do Ambiente: [URL_DO_AMBIENTE]"
-          echo "API Token (Secret): [API_TOKEN_DO_PROD]"
+          echo "URL do Ambiente: ${{ vars.URL_AMBIENTE }}"
+          echo "API Token (Secret): ${{ secrets.API_TOKEN_PROD }}"
 
           # Pergunta de reflexao:
           # Por que a Secret aparece no log como *** e a variavel aparece normalmente?
